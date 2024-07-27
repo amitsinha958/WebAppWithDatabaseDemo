@@ -20,7 +20,7 @@ steps:
 
 - script: dotnet restore
   displayName: 'dotnet restore'
-  workingDirectory: '$(solutionDir)'
+  workingDirectory: '/home/vsts/work/1/s'
 
 - task: PowerShell@2
   displayName: 'PS: Add Project GUID'
