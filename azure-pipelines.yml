@@ -36,6 +36,7 @@ steps:
     projectKey: 'amitsinha958_sonarwebapp'
     organization: 'amitsinha958'
 
+- script: cd /home/vsts/work/1/s | ls
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
