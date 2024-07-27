@@ -31,13 +31,8 @@ steps:
   displayName: 'Prepare analysis on SonarQube'
   inputs:
     SonarQube: MySonarQube
-	organization: ‘amitsinha958’
     projectKey: 'amitsinha958_sonarwebapp'
-	extraProperties: |
-	sonar.exclusions=**/obj/**,**/*.dll,**/Migrations/*
-	sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\**\*.trx
-	sonar.qualitygate.wait=true
-	
+    organization: 'amitsinha958'
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
