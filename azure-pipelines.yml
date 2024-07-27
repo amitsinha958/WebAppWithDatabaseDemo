@@ -38,13 +38,13 @@ steps:
 
 - script: dotnet build
   displayName: 'dotnet build'
-  workingDirectory: '$(solutionDir)'
+  workingDirectory: '/home/vsts/work/1/s'
 
-- script: cd $(solutionDir) | ls
+- script: cd /home/vsts/work/1/s | ls
 
 - script: dotnet test
   displayName: 'dotnet test'
-  workingDirectory: '$(solutionDir)'
+  workingDirectory: '/home/vsts/work/1/s'
 
 - task: DotNetCoreCLI@2
   displayName: Publish
