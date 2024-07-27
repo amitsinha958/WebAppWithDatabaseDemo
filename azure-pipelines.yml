@@ -44,14 +44,20 @@ steps:
     projects: |
       **/*.csproj
       !**/*SeleniumUiTests.csproj
-      !**/*WebApp.Database.sqlproj
     arguments: '--configuration $(BuildConfiguration)'
 
 - script: cd /home/vsts/work/1/s | ls
 
-- script: dotnet test
-  displayName: 'dotnet test'
-  workingDirectory: '/home/vsts/work/1/s'
+#- script: dotnet test
+#  displayName: 'dotnet test'
+#  workingDirectory: '/home/vsts/work/1/s'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: |
+      **/*.csproj
+      !**/*SeleniumUiTests.csproj
+      !**/*WebApp.Database.sqlproj
 
 - task: DotNetCoreCLI@2
   displayName: Publish
