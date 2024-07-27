@@ -41,8 +41,8 @@ steps:
   inputs:
     projects: |
       '**/*.csproj'
-      '!**/*SeleniumUiTests.csproj' # This ignores projects with the occurrence of Mobile anywhere in the filename
-      '!**/*WebApp.Database.sqlproj'
+      '!**/*SeleniumUiTests*.csproj' # This ignores projects with the occurrence of Mobile anywhere in the filename
+      '!**/*WebApp.Database*.sqlproj'
     arguments: '--configuration $(BuildConfiguration)' 
 
 - script: cd /home/vsts/work/1/s | ls
