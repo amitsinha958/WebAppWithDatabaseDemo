@@ -40,7 +40,8 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: '**/*.csproj'
+    projects: '**/*.csproj
+    !**/*SeleniumUiTests.csproj'
     arguments: '--configuration $(BuildConfiguration)' 
 
 - script: cd /home/vsts/work/1/s | ls
