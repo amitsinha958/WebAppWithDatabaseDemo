@@ -36,9 +36,14 @@ steps:
     projectKey: 'amitsinha958_sonarwebapp'
     organization: 'amitsinha958'
 
-- script: dotnet build
-  displayName: 'dotnet build'
-  workingDirectory: '/home/vsts/work/1/s'
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: |
+      '**/*.csproj'
+      '!**/*SeleniumUiTests.csproj' # This ignores projects with the occurrence of Mobile anywhere in the filename
+      '!**/*WebApp.Database.sqlproj'
+    arguments: '--configuration $(BuildConfiguration)' 
 
 - script: cd /home/vsts/work/1/s | ls
 
