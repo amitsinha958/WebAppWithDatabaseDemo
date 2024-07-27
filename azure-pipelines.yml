@@ -44,6 +44,7 @@ steps:
     projects: |
       **/*.csproj
       !**/*SeleniumUiTests.csproj
+      !**/*WebApp.Database.sqlproj
     arguments: '--configuration $(BuildConfiguration)'
 
 - script: cd /home/vsts/work/1/s | ls
