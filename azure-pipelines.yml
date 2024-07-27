@@ -15,7 +15,7 @@ variables:
 
 steps:
 
-- task: UseDotnet@2
+- task: UseDotNet@2
   displayName: 'Install .Net 5 SDK'
   inputs:
     version: 5.0.x
