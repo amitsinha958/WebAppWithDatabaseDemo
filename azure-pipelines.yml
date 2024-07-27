@@ -1,0 +1,72 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  RestoreBuildProjects: '**/*.csproj
+!**/*SeleniumUiTests.csproj'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+    projects: '$(Parameters.RestoreBuildProjects)'
+
+- task: PowerShell@2
+  displayName: 'PS: Add Project GUID'
+  inputs:
+    targetType: filePath
+    filePath: './sonar-add-project-guid.ps1'
+    workingDirectory: WebApp
+
+- task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@6
+  displayName: 'Prepare analysis on SonarQube'
+  inputs:
+    SonarQube: MySonarQube
+	organization: ‘amitsinha958’
+    projectKey: 'amitsinha958_sonarwebapp'
+	extraProperties: |
+	sonar.exclusions=**/obj/**,**/*.dll,**/Migrations/*
+	sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\**\*.trx
+	sonar.qualitygate.wait=true
+	
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: '$(Parameters.RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: '$(Parameters.TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: True
+
+- task: SonarSource.sonarqube.6D01813A-9589-4B15-8491-8164AEB38055.SonarQubeAnalyze@6
+  displayName: 'Run Code Analysis'
+
+- task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@6
+  displayName: 'Publish Quality Gate Result'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
